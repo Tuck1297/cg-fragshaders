@@ -236,6 +236,25 @@ class GlApp {
         if (this.filter === 'custom') {
             this.gl.uniform1f(shader.uniforms.width, this.video.videoWidth);
             this.gl.uniform1f(shader.uniforms.height, this.video.videoHeight);
+            this.gl.uniform1f(shader.uniforms.time, time / 1000.0);
+
+
+            let weights = [
+                1,1,1,1,1,
+                1,2,3,2,1,
+                1,2,4,3,1,
+                1,2,3,2,1,
+                1,1,1,1,1
+            ];
+            let weight_array = [];
+
+            for (let i = 0; i < weights.length; i++) {
+                weight_array[i] = {};
+                weight_array[i] = this.gl.getUniformLocation(this.shader["custom"].program, "weights["+i+"]");
+                this.gl.uniform1f(weight_array[i], weights[i] );
+            }
+
+
         }
         else if (this.filter === 'ripple') {
             this.gl.uniform1f(shader.uniforms.time, time / 1000.0);
